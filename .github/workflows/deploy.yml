@@ -1,15 +1,16 @@
-name: Deploy Keep-Alive Bot
+name: Keep-Alive System
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  schedule:
+    # Executa a cada 10 minutos como backup extra
+    - cron: "*/10 * * * *"
+  workflow_dispatch: # Permite execução manual
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -21,11 +22,36 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install requests
 
       - name: Test bot (quick run)
         run: |
           timeout 30s python keep_alive_bot.py || true
 
-    # Adicione aqui steps para deploy automático no Render
-    # se configurar webhook de deploy
+  # Backup Keep-Alive via GitHub Actions
+  backup-ping:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Ping Sites
+        run: |
+          echo "🔄 GitHub Actions Backup Ping"
+
+          # Lista de sites para manter vivos
+          sites=(
+            "https://dreamwalkerplane.onrender.com"
+            "https://keep-alive-bot-tavl.onrender.com/health"
+          )
+
+          for site in "${sites[@]}"; do
+            echo "📡 Pingando: $site"
+            response=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$site" || echo "000")
+            if [ "$response" -eq 200 ] || [ "$response" -eq 204 ]; then
+              echo "✅ $site - OK ($response)"
+            else
+              echo "⚠️ $site - Falhou ($response)"
+            fi
+            sleep 5
+          done
+
+          echo "🎯 Backup ping concluído via GitHub Actions"

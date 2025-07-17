@@ -1,0 +1,51 @@
+#!/bin/bash
+
+echo "🚀 Script de Deploy - Sistema Keep-Alive Distribuído"
+echo "=================================================="
+
+echo ""
+echo "📋 INSTRUÇÕES PARA CRIAR SISTEMA ANTI-SLEEP:"
+echo ""
+
+echo "1️⃣ DEPLOY DO BOT PRINCIPAL (Já feito):"
+echo "   ✅ keep-alive-bot-tavl.onrender.com"
+echo ""
+
+echo "2️⃣ CRIAR BOT DE BACKUP:"
+echo "   📁 Crie um novo repositório: 'backup-keep-alive-bot'"
+echo "   📋 Copie apenas: backup_bot.py, requirements.txt"
+echo "   🚀 Deploy no Render como Background Worker"
+echo "   🎯 Nome sugerido: backup-keep-alive-xyz"
+echo ""
+
+echo "3️⃣ CONFIGURAR URLS CRUZADAS:"
+echo "   Bot Principal monitora:"
+echo "   - dreamwalkerplane.onrender.com"
+echo "   - backup-keep-alive-xyz.onrender.com/health"
+echo "   - httpbin.org/status/200"
+echo ""
+echo "   Bot Backup monitora:"
+echo "   - keep-alive-bot-tavl.onrender.com/health"
+echo "   - dreamwalkerplane.onrender.com"
+echo ""
+
+echo "4️⃣ ALTERNATIVAS GRATUITAS:"
+echo "   🔄 UptimeRobot (50 monitores grátis)"
+echo "   🔄 Koyeb (free tier)"
+echo "   🔄 Railway (500h grátis/mês)"
+echo "   🔄 Fly.io (free allowance)"
+echo ""
+
+echo "5️⃣ ESTRATÉGIA GITHUB ACTIONS:"
+echo "   ⏰ Cron job a cada 10 minutos"
+echo "   📡 Faz ping nos seus sites"
+echo "   🆓 Completamente gratuito"
+echo ""
+
+echo "=================================================="
+echo "🎯 PRÓXIMOS PASSOS:"
+echo "1. Atualize o código atual (git push)"
+echo "2. Crie repo do backup_bot.py"
+echo "3. Configure GitHub Actions (arquivo já criado)"
+echo "4. Monitor com UptimeRobot como backup"
+echo "=================================================="

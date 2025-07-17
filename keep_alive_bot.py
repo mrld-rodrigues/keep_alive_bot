@@ -11,19 +11,21 @@ import random    # Para randomizar intervalos
 
 # URLs dos sites que serão mantidos ativos (suporte a múltiplos sites)
 URLS = [
-    "https://dreamwalkerplane.onrender.com",
-    # Adicione outras URLs aqui - exemplos:
-    "https://keep-alive-bot-tavl.onrender.com/health",
-    # "https://api-backend.onrender.com",
-    # "https://frontend-app.onrender.com",
-    # "https://bot-discord.onrender.com",
-    # "https://qualquer-site.herokuapp.com",
+    # Sites principais - ESTRATÉGIA BIDIRECIONAL
+    "https://dreamwalkerplane.onrender.com",    # Site principal que TAMBÉM chama o bot
+    
+    # Adicione outros sites aqui (não incluir o próprio bot - será mantido pelo dreamwalker)
+    # "https://outro-backend.onrender.com",
+    # "https://api-secundaria.onrender.com",
+    
+    # Testes de conectividade (opcional)
+    "https://httpbin.org/status/200",
 ]
 
-# Intervalo entre as requisições: 14 minutos e 50 segundos (em segundos)
-# Com variação aleatória de ±2 minutos para parecer mais natural
-INTERVALO_BASE = 14 * 60 + 50
-VARIACAO_MAXIMA = 2 * 60  # ±2 minutos
+# Intervalo otimizado: 12 minutos (mais agressivo para garantir que não durma)
+# O dreamwalker vai chamar o bot em intervalos diferentes para criar redundância
+INTERVALO_BASE = 12 * 60  # 12 minutos
+VARIACAO_MAXIMA = 1 * 60  # ±1 minuto
 
 # Timeout para requisições (em segundos)
 TIMEOUT_REQUISICAO = 30
@@ -57,26 +59,33 @@ def acessar_site(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                       "AppleWebKit/537.36 (KHTML, like Gecko) "
-                      "Chrome/114.0.0.0 Safari/537.36"
+                      "Chrome/114.0.0.0 Safari/537.36",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
     }
     try:
         # Envia uma requisição GET para a URL com timeout
         resposta = requests.get(url, headers=headers, timeout=TIMEOUT_REQUISICAO)
 
-        # Se o site respondeu com sucesso (código 200)
-        if resposta.status_code == 200:
-            logging.info(f"✅ Acesso bem-sucedido ao site: {url}")
+        # Se o site respondeu com sucesso (código 200-299)
+        if 200 <= resposta.status_code < 300:
+            logging.info(f"✅ Acesso bem-sucedido ao site: {url} (Status: {resposta.status_code})")
+            return True
         else:
             # Se respondeu com outro código (ex: 503, 404, etc.)
             logging.warning(f"⚠️ Acesso com falha ({resposta.status_code}) ao site: {url}")
+            return False
 
     except requests.exceptions.Timeout:
         logging.error(f"⏰ Timeout ao acessar o site: {url}")
+        return False
     except requests.exceptions.ConnectionError:
         logging.error(f"🔌 Erro de conexão ao acessar o site: {url}")
+        return False
     except Exception as e:
         # Em caso de erro (timeout, rede fora, etc.)
         logging.error(f"❌ Erro inesperado ao acessar {url}: {e}")
+        return False
 
 def acessar_todos_os_sites():
     """
@@ -125,7 +134,7 @@ if __name__ == "__main__":
     import os
     if os.environ.get('PORT'):
         # Modo Web Service - inicia servidor Flask
-        from flask import Flask, jsonify
+        from flask import Flask, jsonify, request
         import threading
         from datetime import datetime
         
@@ -160,6 +169,7 @@ if __name__ == "__main__":
         def home():
             return jsonify({
                 "status": "Keep-Alive Bot Ativo",
+                "strategy": "Bidirecional com DreamWalker",
                 "bot_ativo": bot_status["ativo"],
                 "total_ciclos": bot_status["total_ciclos"],
                 "ultimo_ciclo": bot_status["ultimo_ciclo"],
@@ -168,7 +178,23 @@ if __name__ == "__main__":
         
         @app.route('/health')
         def health():
-            return jsonify({"status": "ok", "timestamp": datetime.now().isoformat()})
+            return jsonify({
+                "status": "ok", 
+                "timestamp": datetime.now().isoformat(),
+                "message": "Bot funcionando - DreamWalker pode me manter ativo!"
+            })
+        
+        @app.route('/ping')
+        def ping():
+            """Endpoint especial para receber pings do DreamWalker"""
+            source = request.headers.get('X-Source', 'unknown')
+            logging.info(f"📡 Ping recebido de: {source}")
+            return jsonify({
+                "pong": True,
+                "timestamp": datetime.now().isoformat(),
+                "source": source,
+                "bot_status": "active"
+            })
         
         # Inicia bot em thread separada
         bot_thread = threading.Thread(target=bot_worker, daemon=True)

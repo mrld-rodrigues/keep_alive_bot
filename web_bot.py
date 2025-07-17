@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Configurações
 URLS = [
     "https://dreamwalkerplane.onrender.com",
+    "https://amiraldo-protifolio-flask-3.onrender.com"
 ]
 
 INTERVALO_BASE = 14 * 60 + 50  # 14min 50s

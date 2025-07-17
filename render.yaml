@@ -1,0 +1,10 @@
+services:
+  - type: worker
+    name: keep-alive-bot
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python keep_alive_bot.py"
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0

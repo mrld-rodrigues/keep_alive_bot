@@ -12,8 +12,12 @@ import random    # Para randomizar intervalos
 # URLs dos sites que serão mantidos ativos (suporte a múltiplos sites)
 URLS = [
     "https://dreamwalkerplane.onrender.com",
-    # Adicione outras URLs aqui se necessário
-    # "https://outro-site.onrender.com",
+    # Adicione outras URLs aqui - exemplos:
+    "https://keep-alive-bot-tavl.onrender.com/health",
+    # "https://api-backend.onrender.com",
+    # "https://frontend-app.onrender.com",
+    # "https://bot-discord.onrender.com",
+    # "https://qualquer-site.herokuapp.com",
 ]
 
 # Intervalo entre as requisições: 14 minutos e 50 segundos (em segundos)

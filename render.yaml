@@ -1,6 +1,7 @@
 services:
+  # Opção 1: Background Worker (Recomendado)
   - type: worker
-    name: keep-alive-bot
+    name: keep-alive-bot-worker
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "python keep_alive_bot.py"
@@ -8,3 +9,14 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+
+  # Opção 2: Web Service (se preferir interface web)
+  # - type: web
+  #   name: keep-alive-bot-web
+  #   env: python
+  #   buildCommand: "pip install -r requirements.txt"
+  #   startCommand: "python keep_alive_bot.py"
+  #   plan: free
+  #   envVars:
+  #     - key: PYTHON_VERSION
+  #       value: 3.11.0

@@ -117,4 +117,62 @@ def iniciar_bot():
 # =======================
 
 if __name__ == "__main__":
-    iniciar_bot()
+    # Verifica se está rodando no Render como Web Service
+    import os
+    if os.environ.get('PORT'):
+        # Modo Web Service - inicia servidor Flask
+        from flask import Flask, jsonify
+        import threading
+        from datetime import datetime
+        
+        app = Flask(__name__)
+        
+        # Status global
+        bot_status = {
+            "ativo": False,
+            "ultimo_ciclo": None,
+            "total_ciclos": 0,
+            "urls": URLS
+        }
+        
+        def bot_worker():
+            """Roda o bot em thread separada"""
+            bot_status["ativo"] = True
+            ciclo = 0
+            
+            while bot_status["ativo"]:
+                ciclo += 1
+                bot_status["total_ciclos"] = ciclo
+                bot_status["ultimo_ciclo"] = datetime.now().isoformat()
+                
+                logging.info(f"🔄 Iniciando ciclo #{ciclo}")
+                acessar_todos_os_sites()
+                
+                intervalo = INTERVALO_BASE + random.randint(-VARIACAO_MAXIMA, VARIACAO_MAXIMA)
+                logging.info(f"⏱️ Aguardando {intervalo//60}min {intervalo%60}s até próximo ciclo...")
+                time.sleep(intervalo)
+        
+        @app.route('/')
+        def home():
+            return jsonify({
+                "status": "Keep-Alive Bot Ativo",
+                "bot_ativo": bot_status["ativo"],
+                "total_ciclos": bot_status["total_ciclos"],
+                "ultimo_ciclo": bot_status["ultimo_ciclo"],
+                "urls_monitoradas": bot_status["urls"]
+            })
+        
+        @app.route('/health')
+        def health():
+            return jsonify({"status": "ok", "timestamp": datetime.now().isoformat()})
+        
+        # Inicia bot em thread separada
+        bot_thread = threading.Thread(target=bot_worker, daemon=True)
+        bot_thread.start()
+        
+        # Inicia servidor web
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port)
+    else:
+        # Modo Background Worker - apenas o bot
+        iniciar_bot()

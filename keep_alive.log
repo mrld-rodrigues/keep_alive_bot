@@ -286,3 +286,9 @@
 2025-07-17 13:44:06,363 - INFO - 🔄 Iniciando ciclo #1
 2025-07-17 13:44:36,475 - ERROR - ⏰ Timeout ao acessar o site: https://dreamwalkerplane.onrender.com
 2025-07-17 13:44:36,475 - INFO - ⏱️ Aguardando 16min 15s até próximo ciclo...
+2025-07-17 14:00:51,476 - INFO - 🔄 Iniciando ciclo #2
+2025-07-17 14:01:21,591 - ERROR - ⏰ Timeout ao acessar o site: https://dreamwalkerplane.onrender.com
+2025-07-17 14:01:21,592 - INFO - ⏱️ Aguardando 12min 52s até próximo ciclo...
+2025-07-17 14:14:13,592 - INFO - 🔄 Iniciando ciclo #3
+2025-07-17 14:14:14,293 - INFO - ✅ Acesso bem-sucedido ao site: https://dreamwalkerplane.onrender.com
+2025-07-17 14:14:14,293 - INFO - ⏱️ Aguardando 13min 41s até próximo ciclo...

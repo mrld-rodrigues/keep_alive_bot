@@ -14,7 +14,7 @@ URLS = [
     # Sites principais - ESTRATÉGIA BIDIRECIONAL
     "https://dreamwalkerplane.onrender.com",
     "https://amiraldo-protifolio-flask.onrender.com/"  
-    
+]
 
 # Intervalo otimizado: 12 minutos (mais agressivo para garantir que não durma)
 # O dreamwalker vai chamar o bot em intervalos diferentes para criar redundância

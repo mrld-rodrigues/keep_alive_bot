@@ -18,6 +18,7 @@ app = Flask(__name__)
 
 URLS = [
     "https://dreamwalkerplane.onrender.com",
+    "https://amiraldo-protifolio-flask.onrender.com/"
     # Adicione outras URLs aqui
 ]
 

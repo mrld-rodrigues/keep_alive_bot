@@ -12,15 +12,9 @@ import random    # Para randomizar intervalos
 # URLs dos sites que serão mantidos ativos (suporte a múltiplos sites)
 URLS = [
     # Sites principais - ESTRATÉGIA BIDIRECIONAL
-    "https://dreamwalkerplane.onrender.com",    # Site principal que TAMBÉM chama o bot
+    "https://dreamwalkerplane.onrender.com",
+    "https://amiraldo-protifolio-flask.onrender.com/"  
     
-    # Adicione outros sites aqui (não incluir o próprio bot - será mantido pelo dreamwalker)
-    # "https://outro-backend.onrender.com",
-    # "https://api-secundaria.onrender.com",
-    
-    # Testes de conectividade (opcional)
-    "https://httpbin.org/status/200",
-]
 
 # Intervalo otimizado: 12 minutos (mais agressivo para garantir que não durma)
 # O dreamwalker vai chamar o bot em intervalos diferentes para criar redundância

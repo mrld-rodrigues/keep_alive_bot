@@ -15,6 +15,12 @@ SITES_UPTIMEROBOT = [
         "interval": 5,  # minutos
         "type": "HTTP"
     },
+    {
+        "name": "Portifolio Flask",
+        "url": "https://amiraldo-protifolio-flask.onrender.com/",
+        "interval": 5,  # minutos
+        "type": "HTTP"
+    },
     # Adicione mais conforme necessário
 ]
 

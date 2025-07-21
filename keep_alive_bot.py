@@ -13,7 +13,13 @@ import random    # Para randomizar intervalos
 URLS = [
     # Sites principais - ESTRATÉGIA BIDIRECIONAL
     "https://dreamwalkerplane.onrender.com",
-    "https://amiraldo-protifolio-flask.onrender.com/"  
+    "https://amiraldo-protifolio-flask.onrender.com/",  # Confirme se esta URL está correta
+    
+    # Auto-ping para manter o próprio bot ativo
+    "https://keep-alive-bot-tavl.onrender.com/health",
+    
+    # Serviços externos para garantir conectividade
+    "https://httpbin.org/status/200",
 ]
 
 # Intervalo otimizado: 12 minutos (mais agressivo para garantir que não durma)
